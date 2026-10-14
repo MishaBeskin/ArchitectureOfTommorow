@@ -13,15 +13,19 @@
     "e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:check": "drizzle-kit check"
+    "db:check": "drizzle-kit check",
+    "db:seed": "tsx --conditions=react-server --env-file=.env.local scripts/seed.ts",
+    "db:unseed": "tsx --conditions=react-server --env-file=.env.local scripts/seed.ts --remove"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.3",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.0",
     "pg": "^8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
+    "sharp": "^0.35.5",
     "zod": "^4.6.7"
   },
   "devDependencies": {
