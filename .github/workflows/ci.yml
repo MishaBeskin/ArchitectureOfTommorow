@@ -25,21 +25,39 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
 
+  # The app reads projects from Supabase at build time, so e2e needs a database that has been
+  # seeded (pnpm db:seed). Use a dedicated CI project, never production. Without the secrets
+  # this job skips instead of failing; add them under Settings > Secrets and variables > Actions.
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      HAS_DB: ${{ secrets.DATABASE_URL != '' }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
     steps:
+      - name: Skip notice
+        if: env.HAS_DB != 'true'
+        run: echo "::notice::e2e skipped - add the DATABASE_URL and Supabase secrets to run it."
       - uses: actions/checkout@v4
+        if: env.HAS_DB == 'true'
       - uses: pnpm/action-setup@v4
+        if: env.HAS_DB == 'true'
       - uses: actions/setup-node@v4
+        if: env.HAS_DB == 'true'
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+        if: env.HAS_DB == 'true'
       - run: pnpm exec playwright install --with-deps chromium
+        if: env.HAS_DB == 'true'
       - run: pnpm e2e
+        if: env.HAS_DB == 'true'
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: ${{ env.HAS_DB == 'true' && !cancelled() }}
         with:
           name: playwright-report
           path: playwright-report/
