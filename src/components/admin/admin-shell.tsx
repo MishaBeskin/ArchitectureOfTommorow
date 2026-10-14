@@ -3,7 +3,10 @@ import type { ReactNode } from "react";
 import { SkipLink } from "@/components/site/skip-link";
 import { Button } from "@/components/ui/button";
 
-const NAV = [{ href: "/admin/projects", label: "Projects" }] as const;
+const NAV = [
+  { href: "/admin/projects", label: "Projects" },
+  { href: "/admin/architects", label: "Architects" },
+] as const;
 
 /** The signed-in frame around every admin page. `logout` is a server action. */
 export function AdminShell({
