@@ -46,7 +46,7 @@ async function EditProject({ params, searchParams }: PageProps<"/admin/projects/
 
   return (
     <>
-      <h1 className="font-serif text-4xl font-medium">{project.title}</h1>
+      <h1 className="font-display text-4xl">{project.title}</h1>
       {created === "1" && (
         <p role="status" className="rounded-lg border-2 border-accent p-4 font-medium">
           The draft was created. You can keep adding details below.

@@ -13,7 +13,7 @@ export default function NewArchitectPage() {
       <Link href="/admin/architects" className="w-fit underline underline-offset-4">
         Back to architects
       </Link>
-      <h1 className="font-serif text-4xl font-medium">Add architect</h1>
+      <h1 className="font-display text-4xl">Add architect</h1>
       <Suspense fallback={<p role="status" className="text-muted">Loading…</p>}>
         <NewArchitect />
       </Suspense>

@@ -36,7 +36,7 @@ async function EditArchitect({ params, searchParams }: PageProps<"/admin/archite
 
   return (
     <>
-      <h1 className="font-serif text-4xl font-medium">{architect.name}</h1>
+      <h1 className="font-display text-4xl">{architect.name}</h1>
       {created === "1" && (
         <p role="status" className="rounded-lg border-2 border-accent p-4 font-medium">
           The architect was added.

@@ -17,7 +17,7 @@ export default function NewProjectPage() {
       <Link href="/admin/projects" className="w-fit underline underline-offset-4">
         Back to projects
       </Link>
-      <h1 className="font-serif text-4xl font-medium">New project</h1>
+      <h1 className="font-display text-4xl">New project</h1>
       <p className="text-muted">It is saved as a draft. Nothing is public until you publish it.</p>
       <Suspense fallback={<p role="status" className="text-muted">Loading…</p>}>
         <NewProject />

@@ -50,7 +50,7 @@ export function MobileNav() {
         <nav aria-label="Main">
           <NavLinks
             className="mt-6 flex flex-col gap-2"
-            linkClassName="font-serif text-3xl"
+            linkClassName="font-display text-3xl"
             onNavigate={close}
           />
         </nav>

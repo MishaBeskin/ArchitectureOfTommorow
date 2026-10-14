@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { Barlow_Semi_Condensed, Inter } from "next/font/google";
 import { SITE_NAME } from "@/lib/site";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
@@ -10,12 +10,13 @@ const inter = Inter({
   display: "swap",
 });
 
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
+// Headings: a compact, bold, architectural sans, always set uppercase (see .font-display in
+// globals.css). One static weight keeps the file small, and fewer bytes before first paint is what
+// the page budget is about.
+const display = Barlow_Semi_Condensed({
+  variable: "--font-display",
   subsets: ["latin"],
-  // Headings use only font-medium. One static weight is a much smaller file than the variable font
-  // that carries every weight, and fewer bytes before first paint is what the page budget is about.
-  weight: "500",
+  weight: "700",
   display: "swap",
 });
 
@@ -43,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${newsreader.variable} h-full antialiased`}
+      className={`${inter.variable} ${display.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -44,7 +44,7 @@ const fieldId = (name: ProjectField) => `field-${name}`;
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-5">
-      <h2 className="border-b border-border pb-2 font-serif text-2xl font-medium">{title}</h2>
+      <h2 className="border-b border-border pb-2 font-display text-2xl">{title}</h2>
       {children}
     </section>
   );

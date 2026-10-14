@@ -14,7 +14,7 @@ export default function AdminArchitectsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-serif text-4xl font-medium">Architects</h1>
+        <h1 className="font-display text-4xl">Architects</h1>
         <Link href="/admin/architects/new" className={buttonStyles()}>
           Add architect
         </Link>

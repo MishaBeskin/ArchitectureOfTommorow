@@ -8,12 +8,12 @@ export function FeaturedProjects({ projects }: { projects: ProjectCardData[] }) 
   if (projects.length === 0) return null;
 
   return (
-    <section aria-labelledby="featured-title" className="flex flex-col gap-8 py-10">
+    <section aria-labelledby="featured-title" className="flex flex-col gap-10 py-14">
       <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
-        <h2 id="featured-title" className="font-serif text-3xl font-medium sm:text-4xl">
+        <h2 id="featured-title" className="font-display text-3xl sm:text-4xl">
           Featured projects
         </h2>
-        <Link href="/projects" className="inline-flex min-h-11 items-center underline underline-offset-4">
+        <Link href="/projects" className="inline-flex min-h-11 items-center font-semibold text-blue underline-offset-4 hover:underline">
           View all projects
         </Link>
       </div>

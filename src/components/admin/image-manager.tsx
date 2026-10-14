@@ -143,7 +143,7 @@ export function ImageManager({
 
   return (
     <section className="flex flex-col gap-6" aria-labelledby="images-heading">
-      <h2 id="images-heading" className="border-b border-border pb-2 font-serif text-2xl font-medium">
+      <h2 id="images-heading" className="border-b border-border pb-2 font-display text-2xl">
         Images ({images.length})
       </h2>
 
@@ -269,7 +269,7 @@ export function ImageManager({
         aria-labelledby="add-image-heading"
         className="flex flex-col gap-4 rounded-xl border border-border p-4"
       >
-        <h3 id="add-image-heading" className="font-serif text-xl font-medium">
+        <h3 id="add-image-heading" className="font-display text-xl">
           Add an image
         </h3>
 

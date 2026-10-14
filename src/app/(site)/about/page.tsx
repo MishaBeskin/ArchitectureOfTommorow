@@ -13,8 +13,8 @@ export const metadata: Metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <div className="flex max-w-2xl flex-col gap-6">
-      <h1 className="font-serif text-4xl font-medium sm:text-5xl">About</h1>
-      <p className="text-lg">
+      <h1 className="font-display text-5xl leading-[0.95] sm:text-7xl">About</h1>
+      <p className="text-xl font-semibold text-blue sm:text-2xl">
         Architecture of Tomorrow is a curated showcase of new architecture projects: the ideas,
         the places and the people behind them.
       </p>

@@ -13,7 +13,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <JsonLd data={[organizationJsonLd(siteUrl), websiteJsonLd(siteUrl)]} />
       <SkipLink />
       <SiteHeader />
-      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-4 py-12 sm:px-6 sm:py-16">
         {children}
       </main>
       <SiteFooter />

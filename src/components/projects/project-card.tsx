@@ -25,7 +25,7 @@ export function ProjectCard({
 
   return (
     <article className="group relative flex flex-col gap-4">
-      <div className="overflow-hidden rounded-xl bg-surface">
+      <div className="overflow-hidden rounded-2xl bg-surface">
         {cover ? (
           <Image
             src={cover.url}
@@ -43,10 +43,10 @@ export function ProjectCard({
         )}
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-sm text-muted">
+        <p className="text-sm font-semibold text-blue">
           {formatProjectType(project.type)} · {project.year}
         </p>
-        <Heading className="font-serif text-2xl font-medium leading-tight">
+        <Heading className="font-display text-2xl leading-[1.05]">
           <Link
             href={`/projects/${project.slug}`}
             className="after:absolute after:inset-0 after:content-[''] group-hover:underline"

@@ -94,7 +94,7 @@ export function ProjectsTable({ rows, action }: { rows: AdminProjectRow[]; actio
                 return (
                   <tr key={row.id} className="border-t border-border align-top">
                     <th scope="row" className="px-4 py-4 font-medium">
-                      <span className="font-serif text-lg">{row.title}</span>
+                      <span className="font-display text-lg">{row.title}</span>
                       <span className="block text-sm font-normal text-muted">{row.slug}</span>
                     </th>
                     <td className="px-4 py-4">

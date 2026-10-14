@@ -8,7 +8,7 @@ export function RelatedProjects({ projects }: { projects: ProjectCardData[] }) {
 
   return (
     <section aria-labelledby="related-title" className="flex flex-col gap-8 border-t border-border py-12">
-      <h2 id="related-title" className="font-serif text-3xl font-medium sm:text-4xl">
+      <h2 id="related-title" className="font-display text-3xl sm:text-4xl">
         More projects
       </h2>
       <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">

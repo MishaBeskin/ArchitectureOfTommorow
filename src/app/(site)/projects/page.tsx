@@ -25,8 +25,8 @@ export default function ProjectsPage(props: PageProps<"/projects">) {
   return (
     <div className="flex flex-col gap-8">
       <header className="max-w-2xl">
-        <h1 className="font-serif text-4xl font-medium sm:text-5xl">Projects</h1>
-        <p className="mt-4 text-lg text-muted">
+        <h1 className="font-display text-5xl leading-[0.95] sm:text-7xl">Projects</h1>
+        <p className="mt-5 text-xl font-semibold text-blue">
           Browse new architecture projects. Filter by type, location and year.
         </p>
       </header>

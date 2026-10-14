@@ -13,8 +13,8 @@ export default function ContactPage() {
   return (
     <div className="flex flex-col gap-8">
       <header className="max-w-2xl">
-        <h1 className="font-serif text-4xl font-medium sm:text-5xl">Contact</h1>
-        <p className="mt-4 text-lg text-muted">
+        <h1 className="font-display text-5xl leading-[0.95] sm:text-7xl">Contact</h1>
+        <p className="mt-5 text-xl font-semibold text-blue">
           Questions about a project, or want to work together? Send a message and we will reply.
         </p>
       </header>

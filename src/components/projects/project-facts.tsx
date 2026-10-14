@@ -4,9 +4,9 @@ import type { Project } from "@/lib/types";
 
 function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-1 border-t border-border py-4 first:border-t-0 first:pt-0">
-      <dt className="text-sm text-muted">{label}</dt>
-      <dd className="text-lg">{children}</dd>
+    <div className="flex flex-col gap-1 border-t border-white/15 py-4 first:border-t-0 first:pt-0">
+      <dt className="text-sm font-semibold text-panel-muted">{label}</dt>
+      <dd className="text-lg text-panel-foreground">{children}</dd>
     </div>
   );
 }
@@ -34,7 +34,7 @@ export function ProjectFacts({ project }: { project: Project }) {
                 ) : (
                   architect.name
                 )}
-                {architect.role && <span className="text-muted"> · {architect.role}</span>}
+                {architect.role && <span className="text-panel-muted"> · {architect.role}</span>}
               </li>
             ))}
           </ul>

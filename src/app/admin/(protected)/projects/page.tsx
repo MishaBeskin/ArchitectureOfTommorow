@@ -14,7 +14,7 @@ export default function AdminProjectsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-serif text-4xl font-medium">Projects</h1>
+        <h1 className="font-display text-4xl">Projects</h1>
         <Link href="/admin/projects/new" className={buttonStyles()}>
           New project
         </Link>

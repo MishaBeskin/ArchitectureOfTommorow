@@ -96,11 +96,11 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
             { label: project.title },
           ]}
         />
-        <header className="max-w-3xl">
-          <h1 className="font-serif text-4xl font-medium leading-tight tracking-tight sm:text-6xl">
+        <header className="max-w-4xl">
+          <h1 className="font-display text-5xl leading-[0.95] sm:text-7xl">
             {project.title}
           </h1>
-          <p className="mt-4 text-xl text-muted">{project.summary}</p>
+          <p className="mt-5 text-xl font-semibold text-blue sm:text-2xl">{project.summary}</p>
         </header>
       </div>
 
@@ -108,13 +108,16 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
 
       <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <section aria-labelledby="about-project" className="flex flex-col gap-4">
-          <h2 id="about-project" className="font-serif text-3xl font-medium">
+          <h2 id="about-project" className="font-display text-3xl">
             About this project
           </h2>
           <ProjectDescription markdown={project.descriptionMd} />
         </section>
-        <aside aria-labelledby="project-details" className="lg:sticky lg:top-6 lg:self-start">
-          <h2 id="project-details" className="mb-4 font-serif text-3xl font-medium">
+        <aside
+          aria-labelledby="project-details"
+          className="on-panel rounded-3xl bg-panel p-8 text-panel-foreground lg:sticky lg:top-24 lg:self-start"
+        >
+          <h2 id="project-details" className="mb-6 font-display text-2xl">
             Details
           </h2>
           <ProjectFacts project={project} />

@@ -63,7 +63,7 @@ export function ArchitectsTable({ rows, action }: { rows: AdminArchitectRow[]; a
             <tbody>
               {rows.map((row) => (
                 <tr key={row.id} className="border-t border-border align-top">
-                  <th scope="row" className="px-4 py-4 font-serif text-lg font-medium">
+                  <th scope="row" className="px-4 py-4 font-display text-lg">
                     {row.name}
                   </th>
                   <td className="px-4 py-4 text-sm">

@@ -11,8 +11,8 @@ import Markdown, { type Components } from "react-markdown";
  * Each renderer takes only `children` (and `href`), so no other attribute can reach the DOM.
  */
 const components: Components = {
-  h1: ({ children }) => <h3 className="mt-8 font-serif text-2xl font-medium">{children}</h3>,
-  h2: ({ children }) => <h3 className="mt-8 font-serif text-2xl font-medium">{children}</h3>,
+  h1: ({ children }) => <h3 className="mt-8 font-display text-2xl">{children}</h3>,
+  h2: ({ children }) => <h3 className="mt-8 font-display text-2xl">{children}</h3>,
   h3: ({ children }) => <h4 className="mt-6 text-lg font-semibold">{children}</h4>,
   p: ({ children }) => <p className="text-lg leading-8">{children}</p>,
   ul: ({ children }) => <ul className="list-disc space-y-2 pl-6 text-lg leading-8">{children}</ul>,

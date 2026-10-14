@@ -9,15 +9,15 @@ export function Hero({ lead }: { lead: ProjectCardData | null }) {
   const cover = lead?.cover;
 
   return (
-    <section aria-labelledby="hero-title" className="flex flex-col gap-10 py-4 sm:py-8">
-      <div className="max-w-3xl">
+    <section aria-labelledby="hero-title" className="flex flex-col gap-12 py-4 sm:gap-16 sm:py-8">
+      <div className="max-w-4xl">
         <h1
           id="hero-title"
-          className="font-serif text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl"
+          className="font-display text-5xl leading-[0.95] min-[480px]:text-6xl sm:text-8xl"
         >
           Architecture of Tomorrow
         </h1>
-        <p className="mt-6 max-w-xl text-lg text-muted sm:text-xl">
+        <p className="mt-6 max-w-2xl text-xl font-semibold text-blue sm:text-2xl">
           New architecture projects, shown through renderings, the people who designed them and the
           places they belong to.
         </p>
@@ -35,7 +35,7 @@ export function Hero({ lead }: { lead: ProjectCardData | null }) {
             href={`/projects/${lead.slug}`}
             tabIndex={-1}
             aria-hidden="true"
-            className="block overflow-hidden rounded-2xl bg-surface"
+            className="block overflow-hidden rounded-3xl bg-surface"
           >
             <Image
               src={cover.url}

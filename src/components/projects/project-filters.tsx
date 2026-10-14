@@ -20,7 +20,7 @@ export function ProjectFilters({ options, filters }: { options: FilterOptions; f
       // Remount when the filters change so the selects always show the URL's state.
       key={serializeProjectFilters(filters)}
       aria-label="Filter projects"
-      className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:items-end"
+      className="grid gap-4 rounded-2xl bg-surface p-5 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:items-end"
     >
       <Field label="Type">
         {(control) => (

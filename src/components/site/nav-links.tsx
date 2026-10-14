@@ -28,7 +28,7 @@ export function NavLinks({
               aria-current={current ? "page" : undefined}
               onClick={onNavigate}
               className={cn(
-                "inline-flex min-h-11 items-center underline-offset-8 hover:underline aria-[current=page]:underline aria-[current=page]:decoration-2",
+                "inline-flex min-h-11 items-center decoration-blue decoration-2 underline-offset-[10px] hover:text-blue aria-[current=page]:text-blue aria-[current=page]:underline",
                 linkClassName,
               )}
             >

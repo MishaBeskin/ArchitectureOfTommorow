@@ -71,7 +71,7 @@ export function MessagesList({
               <li key={message.id} className="rounded-xl border border-border p-5">
                 <article className="flex flex-col gap-3" aria-label={`Message from ${message.name}`}>
                   <header className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                    <h2 className="font-serif text-xl font-medium">{message.name}</h2>
+                    <h2 className="font-display text-xl">{message.name}</h2>
                     {/* Text and an outline carry the meaning; colour alone would fail for colour-blind users. */}
                     <span
                       className={cn(

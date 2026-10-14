@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Sign in" };
 export default function LoginPage(props: PageProps<"/admin/login">) {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-8 px-4 py-16">
-      <h1 className="font-serif text-4xl font-medium">Admin sign in</h1>
+      <h1 className="font-display text-4xl">Admin sign in</h1>
       {/* `next` comes from the URL, which is request-time data, so it is read behind Suspense. */}
       <Suspense fallback={<LoginFormPlaceholder />}>
         <LoginFormWithNext searchParams={props.searchParams} />

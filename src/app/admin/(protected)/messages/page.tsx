@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Messages" };
 export default function AdminMessagesPage() {
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="font-serif text-4xl font-medium">Messages</h1>
+      <h1 className="font-display text-4xl">Messages</h1>
       <Suspense fallback={<p role="status" className="text-muted">Loading messages…</p>}>
         <AdminMessages />
       </Suspense>

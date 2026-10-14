@@ -13,7 +13,7 @@ const EAGER_COUNT = 3;
 function EmptyState({ filtered }: { filtered: boolean }) {
   return (
     <div className="flex flex-col items-start gap-4 rounded-xl border border-border p-8">
-      <h2 className="font-serif text-2xl font-medium">
+      <h2 className="font-display text-2xl">
         {filtered ? "No projects match these filters" : "No projects yet"}
       </h2>
       <p className="max-w-prose text-muted">

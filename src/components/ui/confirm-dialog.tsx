@@ -39,7 +39,7 @@ export function ConfirmDialog({
       onClose={onClose}
       className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-border-strong bg-background p-6 text-foreground backdrop:bg-black/60"
     >
-      <h2 id={titleId} className="font-serif text-2xl font-medium">
+      <h2 id={titleId} className="font-display text-2xl">
         {title}
       </h2>
       <p id={descriptionId} className="mt-3 text-muted">
