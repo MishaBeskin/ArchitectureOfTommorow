@@ -2,7 +2,7 @@
 import { asc, eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createTestDb, projectValues, type TestDb } from "@/test/db";
-import { architects, projectArchitects, projectImages, projects } from "../db/schema";
+import { architects, projectArchitects, projectImages, projects, projectSlugRedirects } from "../db/schema";
 import { SEED_ARCHITECTS, SEED_PREFIX, SEED_PROJECTS } from "./data";
 import { seedDatabase, unseedDatabase } from "./seed";
 
@@ -83,6 +83,14 @@ describe("seedDatabase", () => {
       { role: "Lead architect", order: 0, name: "Atelier Vento" },
       { role: "Landscape", order: 1, name: "Casa Aurora" },
     ]);
+  });
+
+  it("creates a redirect row for each previous slug", async () => {
+    const withRedirects = SEED_PROJECTS.flatMap((p) => p.previousSlugs ?? []);
+    const rows = await db.select().from(projectSlugRedirects);
+
+    expect(withRedirects.length).toBeGreaterThan(0);
+    expect(rows.map((r) => r.oldSlug).sort()).toEqual([...withRedirects].sort());
   });
 
   it("is idempotent: running it again leaves the same counts", async () => {

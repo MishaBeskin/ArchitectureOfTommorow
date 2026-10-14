@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { countryName, formatLocation, formatProjectType } from "./format";
+import { countryName, formatLocation, formatPhase, formatProjectType } from "./format";
+
+describe("formatPhase", () => {
+  it("turns every phase into readable text", () => {
+    expect(formatPhase("concept")).toBe("Concept");
+    expect(formatPhase("in-progress")).toBe("In progress");
+    expect(formatPhase("completed")).toBe("Completed");
+  });
+});
 
 describe("formatProjectType", () => {
   it("capitalises the first letter and keeps hyphens", () => {

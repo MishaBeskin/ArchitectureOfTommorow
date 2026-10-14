@@ -95,6 +95,14 @@ export async function seedDatabase(
         await tx.update(schema.projects).set({ coverImageId: cover.id }).where(eq(schema.projects.id, projectId));
       }
 
+      if (project.previousSlugs?.length) {
+        await tx
+          .insert(schema.projectSlugRedirects)
+          .values(project.previousSlugs.map((oldSlug) => ({ oldSlug, projectId })))
+          // A redirect row may exist from a previous run that pointed at another project.
+          .onConflictDoUpdate({ target: schema.projectSlugRedirects.oldSlug, set: { projectId } });
+      }
+
       await tx.insert(schema.projectArchitects).values(
         project.architects.map((credit, sortOrder) => ({
           projectId,

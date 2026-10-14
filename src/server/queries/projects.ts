@@ -34,6 +34,13 @@ export async function getProjectPage(slug: string) {
   return queries.getProjectPage(getDb(), slug);
 }
 
+export async function getRelatedProjects(slug: string) {
+  "use cache";
+  cacheTag(PROJECTS_TAG, projectTag(slug));
+  cacheLife("days");
+  return queries.getRelatedProjects(getDb(), slug);
+}
+
 export async function getFilterOptions() {
   "use cache";
   cacheTag(PROJECTS_TAG);

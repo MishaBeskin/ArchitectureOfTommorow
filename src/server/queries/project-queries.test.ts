@@ -11,6 +11,7 @@ import {
   getFilterOptions,
   getProjectPage,
   getPublishedSlugs,
+  getRelatedProjects,
   listProjects,
 } from "./project-queries";
 
@@ -193,6 +194,84 @@ describe("getFilterOptions", () => {
     const { years } = await getFilterOptions(db);
 
     expect(years).toEqual([2027, 2026, 2025, 2024, 2023, 2022, 2021]);
+  });
+});
+
+describe("seeded slug redirect", () => {
+  it("redirects a project's previous slug to its current one", async () => {
+    expect(await getProjectPage(db, "harbour-library")).toEqual({ kind: "redirect", slug: "harbour-light-library" });
+  });
+});
+
+describe("getRelatedProjects", () => {
+  it("returns other published projects, never the project itself or a draft", async () => {
+    const related = await getRelatedProjects(db, "harbour-light-library");
+
+    expect(related).toHaveLength(3);
+    expect(slugs(related)).not.toContain("harbour-light-library");
+    expect(slugs(related)).not.toContain(DRAFT_SLUG);
+  });
+
+  it("respects the limit", async () => {
+    expect(await getRelatedProjects(db, "harbour-light-library", 2)).toHaveLength(2);
+  });
+
+  it("fills with the newest other projects when nothing is related", async () => {
+    // No other cultural project and no other Danish one is published, so it falls back to newest.
+    const related = await getRelatedProjects(db, "harbour-light-library");
+
+    expect(related[0]!.slug).toBe("yarra-market-quarter");
+    const years = related.map((r) => r.year);
+    expect(years).toEqual([...years].sort((a, b) => b - a));
+  });
+
+  it("puts a project of the same type first, even when it is much older", async () => {
+    const [old] = await db
+      .insert(projects)
+      .values({
+        slug: "old-cultural",
+        title: "Old Cultural",
+        summary: "An older cultural project.",
+        type: "cultural",
+        year: 1990,
+        city: "Rome",
+        countryCode: "IT",
+        status: "published",
+        publishedAt: new Date(),
+      })
+      .returning();
+
+    const related = await getRelatedProjects(db, "harbour-light-library");
+    await db.delete(projects).where(eq(projects.id, old!.id));
+
+    expect(related[0]!.slug).toBe("old-cultural");
+  });
+
+  it("ranks the same country above unrelated projects", async () => {
+    const [local] = await db
+      .insert(projects)
+      .values({
+        slug: "local-neighbour",
+        title: "Local Neighbour",
+        summary: "A Japanese project of another type.",
+        type: "commercial",
+        year: 1995,
+        city: "Tokyo",
+        countryCode: "JP",
+        status: "published",
+        publishedAt: new Date(),
+      })
+      .returning();
+
+    const related = await getRelatedProjects(db, "kansai-timber-school");
+    await db.delete(projects).where(eq(projects.id, local!.id));
+
+    expect(related[0]!.slug).toBe("local-neighbour");
+  });
+
+  it("returns nothing for an unknown or unpublished project", async () => {
+    expect(await getRelatedProjects(db, "does-not-exist")).toEqual([]);
+    expect(await getRelatedProjects(db, DRAFT_SLUG)).toEqual([]);
   });
 });
 

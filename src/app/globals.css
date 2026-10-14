@@ -68,6 +68,11 @@ body {
   outline-offset: 2px;
 }
 
+/* A modal <dialog> (mobile menu, image lightbox) should not let the page scroll behind it. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

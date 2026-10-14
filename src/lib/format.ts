@@ -1,10 +1,20 @@
-import type { Location, ProjectType } from "./types";
+import type { Location, ProjectPhase, ProjectType } from "./types";
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 /** "mixed-use" -> "Mixed-use". */
 export function formatProjectType(type: ProjectType): string {
   return type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+const PHASE_LABELS: Record<ProjectPhase, string> = {
+  concept: "Concept",
+  "in-progress": "In progress",
+  completed: "Completed",
+};
+
+export function formatPhase(phase: ProjectPhase): string {
+  return PHASE_LABELS[phase];
 }
 
 /** ISO 3166-1 alpha-2 -> English country name, falling back to the code itself. */

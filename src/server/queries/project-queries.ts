@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray, ne, sql } from "drizzle-orm";
 import { PAGE_SIZE } from "@/lib/filters";
 import {
   PROJECT_TYPES,
@@ -227,6 +227,30 @@ export async function getFilterOptions(db: AnyDb): Promise<FilterOptions> {
       .sort((a, b) => a.label.localeCompare(b.label)),
     years: yearRows.map((r) => r.year),
   };
+}
+
+/**
+ * Other published projects worth showing next to this one: same type first, then same country,
+ * then the newest of the rest, so the section is never empty while other projects exist.
+ */
+export async function getRelatedProjects(db: AnyDb, slug: string, limit = 3): Promise<ProjectCardData[]> {
+  const [current] = await db
+    .select({ type: projects.type, countryCode: projects.countryCode })
+    .from(projects)
+    .where(and(published, eq(projects.slug, slug)))
+    .limit(1);
+  if (!current) return [];
+
+  const rank = sql<number>`case
+    when ${projects.type} = ${current.type} then 0
+    when ${projects.countryCode} = ${current.countryCode} then 1
+    else 2 end`;
+
+  const rows = await selectCards(db)
+    .where(and(published, ne(projects.slug, slug)))
+    .orderBy(rank, desc(projects.year), desc(projects.publishedAt), asc(projects.title))
+    .limit(limit);
+  return toCards(db, rows);
 }
 
 export async function getPublishedSlugs(db: AnyDb): Promise<string[]> {

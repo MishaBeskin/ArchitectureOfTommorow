@@ -24,6 +24,8 @@ export interface SeedProject {
   featuredOrder?: number;
   architects: Array<{ slug: string; role?: string }>;
   imageCount: number;
+  /** Earlier slugs that must keep working and redirect (308) to this project. */
+  previousSlugs?: string[];
 }
 
 /** Everything seeded is stored under this prefix so it can be removed in one sweep. */
@@ -60,6 +62,7 @@ export const SEED_PROJECTS: SeedProject[] = [
     featuredOrder: 1,
     architects: [{ slug: "studio-nordlys", role: "Lead architect" }],
     imageCount: 4,
+    previousSlugs: ["harbour-library"],
   },
   {
     slug: "terrace-houses-alfama",
