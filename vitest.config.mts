@@ -12,5 +12,8 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.test.{ts,tsx}"],
     css: false,
+    // DB tests migrate an in-memory Postgres and render images; CI runners can be slow.
+    testTimeout: 30_000,
+    hookTimeout: 60_000,
   },
 });

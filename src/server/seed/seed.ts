@@ -1,11 +1,8 @@
 import { and, eq, inArray, notExists } from "drizzle-orm";
-import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import * as schema from "../db/schema";
+import type { AnyDb } from "../db/types";
 import { SEED_ARCHITECTS, SEED_PREFIX, SEED_PROJECTS, type SeedArchitect, type SeedProject } from "./data";
 import { makePlaceholderImage, type PlaceholderImage } from "./placeholder-image";
-
-/** Works with both node-postgres (app) and PGlite (tests). */
-type AnyDb = PgDatabase<PgQueryResultHKT, typeof schema>;
 
 export type Uploader = (pathname: string, data: Buffer, contentType: string) => Promise<string>;
 
