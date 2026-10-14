@@ -34,6 +34,14 @@ const contactSchema = z.object({
   ),
 });
 
+/**
+ * The one person allowed into the admin. Required only when the admin is used, so the public site
+ * builds and runs without it, but every admin check fails (loudly) until it is set.
+ */
+const adminSchema = z.object({
+  ADMIN_EMAIL: z.email().transform((email) => email.trim().toLowerCase()),
+});
+
 export type PublicEnv = z.infer<typeof publicSchema>;
 export type ServerEnv = z.infer<typeof serverSchema>;
 export type ContactEnv = z.infer<typeof contactSchema>;
@@ -72,4 +80,11 @@ export function getContactEnv(): ContactEnv {
   return parse(contactSchema, process.env);
 }
 
-export { contactSchema, parse as parseEnv, publicSchema, serverSchema };
+export function getAdminEnv(): z.infer<typeof adminSchema> {
+  if (typeof window !== "undefined") {
+    throw new Error("getAdminEnv() must not be called in the browser.");
+  }
+  return parse(adminSchema, process.env);
+}
+
+export { adminSchema, contactSchema, parse as parseEnv, publicSchema, serverSchema };

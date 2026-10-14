@@ -18,6 +18,7 @@
     "db:unseed": "tsx --conditions=react-server --env-file=.env.local scripts/seed.ts --remove"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.3",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.0",
