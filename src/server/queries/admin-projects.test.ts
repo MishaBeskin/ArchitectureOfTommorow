@@ -3,8 +3,8 @@ import { eq } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { createTestDb, projectValues, type TestDb } from "@/test/db";
-import { projectImages, projects } from "../db/schema";
-import { getAdminProjectById, listAdminProjects } from "./admin-projects";
+import { architects, projectArchitects, projectImages, projects } from "../db/schema";
+import { getAdminProjectById, getProjectForEdit, listAdminProjects, listArchitectOptions } from "./admin-projects";
 
 let db: TestDb;
 let close: () => Promise<void>;
@@ -19,6 +19,7 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await db.delete(projects);
+  await db.delete(architects);
 });
 
 async function addProject(slug: string, overrides: Partial<ReturnType<typeof projectValues>> = {}, images = 0) {
@@ -104,5 +105,46 @@ describe("getAdminProjectById", () => {
 
   it("returns null for an unknown id", async () => {
     expect(await getAdminProjectById(db, randomUUID())).toBeNull();
+  });
+});
+
+describe("getProjectForEdit", () => {
+  it("returns the project with its credits in order and its images in order", async () => {
+    const project = await addProject("editable", {}, 2);
+    const [a, b] = await db
+      .insert(architects)
+      .values([
+        { slug: "ada", name: "Ada" },
+        { slug: "ben", name: "Ben" },
+      ])
+      .returning();
+    await db.insert(projectArchitects).values([
+      { projectId: project.id, architectId: a!.id, role: null, sortOrder: 1 },
+      { projectId: project.id, architectId: b!.id, role: "Lead", sortOrder: 0 },
+    ]);
+
+    const found = await getProjectForEdit(db, project.id);
+
+    expect(found?.project.slug).toBe("editable");
+    expect(found?.credits).toEqual([
+      { architectId: b!.id, role: "Lead" },
+      { architectId: a!.id, role: null },
+    ]);
+    expect(found?.images).toHaveLength(2);
+  });
+
+  it("returns null for an unknown id", async () => {
+    expect(await getProjectForEdit(db, randomUUID())).toBeNull();
+  });
+});
+
+describe("listArchitectOptions", () => {
+  it("lists architects by name", async () => {
+    await db.insert(architects).values([
+      { slug: "zed", name: "Zed" },
+      { slug: "amy", name: "Amy" },
+    ]);
+
+    expect((await listArchitectOptions(db)).map((a) => a.name)).toEqual(["Amy", "Zed"]);
   });
 });

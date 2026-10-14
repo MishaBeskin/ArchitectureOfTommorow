@@ -139,6 +139,13 @@ export function ProjectsTable({ rows, action }: { rows: AdminProjectRow[]; actio
                             {isPublished ? "Unpublish" : "Publish"}
                           </Button>
                         </form>
+                        <Link
+                          href={`/admin/projects/${row.id}`}
+                          aria-label={`Edit ${row.title}`}
+                          className="inline-flex min-h-11 items-center px-2 underline underline-offset-4"
+                        >
+                          Edit
+                        </Link>
                         {isPublished && (
                           <Link
                             href={`/projects/${row.slug}`}

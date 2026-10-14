@@ -1,6 +1,6 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { asc, desc, eq, sql } from "drizzle-orm";
 import type { ProjectStatus, ProjectType } from "@/lib/types";
-import { projects } from "../db/schema";
+import { architects, projectArchitects, projectImages, projects } from "../db/schema";
 import type { AnyDb } from "../db/types";
 
 export interface AdminProjectRow {
@@ -46,4 +46,34 @@ export async function listAdminProjects(db: AnyDb): Promise<AdminProjectRow[]> {
 export async function getAdminProjectById(db: AnyDb, id: string) {
   const [row] = await db.select().from(projects).where(eq(projects.id, id)).limit(1);
   return row ?? null;
+}
+
+export interface ProjectForEdit {
+  project: typeof projects.$inferSelect;
+  credits: Array<{ architectId: string; role: string | null }>;
+  images: Array<{ id: string; alt: string }>;
+}
+
+/** Everything the edit form needs, drafts included. Admin only: never cached or public. */
+export async function getProjectForEdit(db: AnyDb, id: string): Promise<ProjectForEdit | null> {
+  const project = await getAdminProjectById(db, id);
+  if (!project) return null;
+
+  const credits = await db
+    .select({ architectId: projectArchitects.architectId, role: projectArchitects.role })
+    .from(projectArchitects)
+    .where(eq(projectArchitects.projectId, id))
+    .orderBy(asc(projectArchitects.sortOrder));
+  const images = await db
+    .select({ id: projectImages.id, alt: projectImages.alt })
+    .from(projectImages)
+    .where(eq(projectImages.projectId, id))
+    .orderBy(asc(projectImages.sortOrder));
+
+  return { project, credits, images };
+}
+
+/** Every architect by name, for the credits picker. */
+export async function listArchitectOptions(db: AnyDb): Promise<Array<{ id: string; name: string }>> {
+  return db.select({ id: architects.id, name: architects.name }).from(architects).orderBy(asc(architects.name));
 }
