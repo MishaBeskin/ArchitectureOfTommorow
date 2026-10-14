@@ -1,4 +1,5 @@
 import { z } from "zod";
+import "./zod-config";
 
 /** Formats accepted for upload. SVG is deliberately absent: it can carry scripts. */
 export const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"] as const;

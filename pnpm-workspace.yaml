@@ -2,3 +2,6 @@ allowBuilds:
   esbuild: false
   sharp: false
   unrs-resolver: false
+overrides:
+  # The old esbuild bundled inside drizzle-kit (a dev tool; it never ships to production).
+  "@esbuild-kit/core-utils>esbuild": ">=0.25.0"

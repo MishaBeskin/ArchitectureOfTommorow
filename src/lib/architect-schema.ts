@@ -1,4 +1,5 @@
 import { z } from "zod";
+import "./zod-config";
 import { SLUG_MAX_LENGTH, isValidSlug } from "./slug";
 
 export const ARCHITECT_LIMITS = { name: 120, websiteUrl: 300, bio: 2000 } as const;

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import "./zod-config";
 import { isCountryCode } from "./countries";
 import { SLUG_MAX_LENGTH, isValidSlug } from "./slug";
 import { PROJECT_PHASES, PROJECT_TYPES, YEAR_RANGE } from "./types";
