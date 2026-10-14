@@ -7,7 +7,16 @@ import type { ProjectCardData } from "@/lib/types";
  * The title link covers the whole card (via ::after), so there is one tab stop per project and
  * a large click target without nesting interactive elements.
  */
-export function ProjectCard({ project, sizes }: { project: ProjectCardData; sizes: string }) {
+export function ProjectCard({
+  project,
+  sizes,
+  eager = false,
+}: {
+  project: ProjectCardData;
+  sizes: string;
+  /** Load immediately instead of lazily; use for images in the first row above the fold. */
+  eager?: boolean;
+}) {
   const { cover } = project;
 
   return (
@@ -20,6 +29,7 @@ export function ProjectCard({ project, sizes }: { project: ProjectCardData; size
             width={cover.width}
             height={cover.height}
             sizes={sizes}
+            loading={eager ? "eager" : "lazy"}
             placeholder="blur"
             blurDataURL={cover.blurDataUrl}
             className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"

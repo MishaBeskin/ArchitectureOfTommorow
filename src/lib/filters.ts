@@ -50,6 +50,41 @@ export function serializeProjectFilters(filters: ProjectFilters): string {
   return query.toString();
 }
 
+const FILTER_KEYS = ["type", "location", "year", "page"] as const;
+
+/** "/projects" or "/projects?type=civic&page=2": the canonical URL for a set of filters. */
+export function projectsHref(filters: ProjectFilters): string {
+  const query = serializeProjectFilters(filters);
+  return query ? `/projects?${query}` : "/projects";
+}
+
+/**
+ * True when the URL carries one of our params in a non-canonical form: empty (`?type=`, which a
+ * plain GET form sends for "All"), wrong case, an explicit `page=1`, or repeated. Unknown params
+ * such as utm_source are not our business and never trigger a redirect.
+ */
+export function needsCanonicalRedirect(raw: RawSearchParams, filters: ProjectFilters): boolean {
+  const canonical = new URLSearchParams(serializeProjectFilters(filters));
+  return FILTER_KEYS.some((key) => {
+    const value = raw[key];
+    if (value === undefined) return false;
+    if (Array.isArray(value) && value.length > 1) return true;
+    return first(value) !== canonical.get(key);
+  });
+}
+
+/** Canonical URL that keeps unrelated params (e.g. utm_source) and normalises ours. */
+export function canonicalProjectsHref(raw: RawSearchParams, filters: ProjectFilters): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(raw)) {
+    if (value === undefined || (FILTER_KEYS as readonly string[]).includes(key)) continue;
+    for (const item of Array.isArray(value) ? value : [value]) params.append(key, item);
+  }
+  for (const [key, value] of new URLSearchParams(serializeProjectFilters(filters))) params.set(key, value);
+  const query = params.toString();
+  return query ? `/projects?${query}` : "/projects";
+}
+
 export function hasActiveFilters(filters: ProjectFilters): boolean {
   return Boolean(filters.type || filters.location || filters.year);
 }

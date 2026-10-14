@@ -1,5 +1,73 @@
 import { describe, expect, it } from "vitest";
-import { hasActiveFilters, parseProjectFilters, serializeProjectFilters } from "./filters";
+import {
+  canonicalProjectsHref,
+  hasActiveFilters,
+  needsCanonicalRedirect,
+  parseProjectFilters,
+  projectsHref,
+  serializeProjectFilters,
+} from "./filters";
+
+describe("projectsHref", () => {
+  it("is /projects with no filters and appends the canonical query otherwise", () => {
+    expect(projectsHref({ page: 1 })).toBe("/projects");
+    expect(projectsHref({ page: 2, type: "civic" })).toBe("/projects?type=civic&page=2");
+  });
+});
+
+describe("needsCanonicalRedirect", () => {
+  const check = (raw: Record<string, string | string[] | undefined>) =>
+    needsCanonicalRedirect(raw, parseProjectFilters(raw));
+
+  it("is false for canonical and empty URLs", () => {
+    expect(check({})).toBe(false);
+    expect(check({ type: "civic", location: "DK", year: "2025", page: "2" })).toBe(false);
+  });
+
+  it("is true for the empty values a plain GET form sends for 'All'", () => {
+    expect(check({ type: "", location: "", year: "" })).toBe(true);
+    expect(check({ type: "civic", location: "", year: "" })).toBe(true);
+  });
+
+  it("is true for wrong case, page=1, invalid values and repeats", () => {
+    expect(check({ location: "dk" })).toBe(true);
+    expect(check({ page: "1" })).toBe(true);
+    expect(check({ type: "castle" })).toBe(true);
+    expect(check({ year: "abc" })).toBe(true);
+    expect(check({ type: ["civic", "cultural"] })).toBe(true);
+  });
+
+  it("ignores unrelated params so tracking links are not redirected", () => {
+    expect(check({ utm_source: "newsletter" })).toBe(false);
+  });
+});
+
+describe("canonicalProjectsHref", () => {
+  const href = (raw: Record<string, string | string[] | undefined>) =>
+    canonicalProjectsHref(raw, parseProjectFilters(raw));
+
+  it("drops empty and invalid values", () => {
+    expect(href({ type: "", location: "", year: "" })).toBe("/projects");
+    expect(href({ type: "civic", location: "", year: "abc" })).toBe("/projects?type=civic");
+  });
+
+  it("normalises case and page 1", () => {
+    expect(href({ location: "dk", page: "1" })).toBe("/projects?location=DK");
+  });
+
+  it("keeps unrelated params, such as utm_source", () => {
+    expect(href({ type: "", utm_source: "newsletter" })).toBe("/projects?utm_source=newsletter");
+    expect(href({ type: "civic", utm_source: ["a", "b"] })).toBe("/projects?utm_source=a&utm_source=b&type=civic");
+  });
+
+  it("is stable: redirecting to the canonical URL never needs another redirect", () => {
+    const raw = { type: "", location: "dk", year: "2025", page: "1" };
+    const target = new URL(href(raw), "http://x");
+    const next = Object.fromEntries(target.searchParams);
+
+    expect(needsCanonicalRedirect(next, parseProjectFilters(next))).toBe(false);
+  });
+});
 
 describe("parseProjectFilters", () => {
   it("returns page 1 and no filters for empty params", () => {
