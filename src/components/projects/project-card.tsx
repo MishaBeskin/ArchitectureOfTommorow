@@ -11,13 +11,17 @@ export function ProjectCard({
   project,
   sizes,
   eager = false,
+  headingLevel = "h3",
 }: {
   project: ProjectCardData;
   sizes: string;
   /** Load immediately instead of lazily; use for images in the first row above the fold. */
   eager?: boolean;
+  /** Heading levels must not skip: h2 when the cards sit directly under the page's h1, else h3. */
+  headingLevel?: "h2" | "h3";
 }) {
   const { cover } = project;
+  const Heading = headingLevel;
 
   return (
     <article className="group relative flex flex-col gap-4">
@@ -42,14 +46,14 @@ export function ProjectCard({
         <p className="text-sm text-muted">
           {formatProjectType(project.type)} · {project.year}
         </p>
-        <h3 className="font-serif text-2xl font-medium leading-tight">
+        <Heading className="font-serif text-2xl font-medium leading-tight">
           <Link
             href={`/projects/${project.slug}`}
             className="after:absolute after:inset-0 after:content-[''] group-hover:underline"
           >
             {project.title}
           </Link>
-        </h3>
+        </Heading>
         <p className="text-muted">{formatLocation(project.location)}</p>
         {project.architectNames.length > 0 && (
           <p className="text-sm text-muted">{project.architectNames.join(", ")}</p>

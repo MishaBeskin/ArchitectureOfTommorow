@@ -13,6 +13,9 @@ const inter = Inter({
 const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
+  // Headings use only font-medium. One static weight is a much smaller file than the variable font
+  // that carries every weight, and fewer bytes before first paint is what the page budget is about.
+  weight: "500",
   display: "swap",
 });
 

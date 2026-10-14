@@ -62,3 +62,42 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # Performance, accessibility and SEO budgets (see lighthouserc.json). Needs the same seeded CI
+  # database as e2e because the site reads projects from it at build time; skips without the secrets.
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      HAS_DB: ${{ secrets.DATABASE_URL != '' }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      # Canonical URLs and the sitemap are absolute, so the build needs the origin it is measured on.
+      NEXT_PUBLIC_SITE_URL: http://localhost:3200
+    steps:
+      - name: Skip notice
+        if: env.HAS_DB != 'true'
+        run: echo "::notice::lighthouse skipped - add the DATABASE_URL and Supabase secrets to run it."
+      - uses: actions/checkout@v4
+        if: env.HAS_DB == 'true'
+      - uses: pnpm/action-setup@v4
+        if: env.HAS_DB == 'true'
+      - uses: actions/setup-node@v4
+        if: env.HAS_DB == 'true'
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: env.HAS_DB == 'true'
+      - run: pnpm build
+        if: env.HAS_DB == 'true'
+      - run: pnpm lhci
+        if: env.HAS_DB == 'true'
+      - uses: actions/upload-artifact@v4
+        if: ${{ env.HAS_DB == 'true' && !cancelled() }}
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 7

@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    // The whole stylesheet is about 8 KB. Inlining it removes a render-blocking request, which is
+    // the biggest avoidable delay before first paint for a first-time visitor on a slow connection.
+    inlineCss: true,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: supabaseHost

@@ -16,6 +16,16 @@ describe("ProjectCard", () => {
     );
   });
 
+  it("uses an h3 title by default and an h2 when asked, so headings never skip a level", () => {
+    const { unmount } = render(<ProjectCard project={cardFixture()} sizes={SIZES} />);
+    expect(screen.getByRole("heading", { level: 3, name: "Harbour Light Library" })).toBeInTheDocument();
+    unmount();
+
+    render(<ProjectCard project={cardFixture()} sizes={SIZES} headingLevel="h2" />);
+    expect(screen.getByRole("heading", { level: 2, name: "Harbour Light Library" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { level: 3 })).not.toBeInTheDocument();
+  });
+
   it("has exactly one link, so each card is a single tab stop", () => {
     render(<ProjectCard project={cardFixture()} sizes={SIZES} />);
 

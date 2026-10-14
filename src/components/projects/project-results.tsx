@@ -43,7 +43,7 @@ export function ProjectResults({ result, filters }: { result: ProjectListResult;
         <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((project, index) => (
             <li key={project.slug}>
-              <ProjectCard project={project} sizes={CARD_SIZES} eager={index < EAGER_COUNT} />
+              <ProjectCard project={project} sizes={CARD_SIZES} eager={index < EAGER_COUNT} headingLevel="h2" />
             </li>
           ))}
         </ul>
