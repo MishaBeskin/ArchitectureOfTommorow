@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { hashIp } from "../hash-ip";
 import { validateContact, type ContactState, type ContactValues } from "@/lib/contact-validation";
 import { contactMessages } from "../db/schema";
 import type { AnyDb } from "../db/types";
@@ -35,10 +35,8 @@ export interface ContactDeps {
   log: { warn: (message: string, meta?: unknown) => void; error: (message: string, meta?: unknown) => void };
 }
 
-/** Stable per-visitor key that cannot be reversed to an IP address without the secret. */
-export function hashIp(ip: string, key: string): string {
-  return createHmac("sha256", key).update(ip).digest("hex").slice(0, 32);
-}
+// Moved to ../hash-ip so the admin sign-in can share it; re-exported to keep this module's API.
+export { hashIp };
 
 const error = (message: string, values: ContactValues): ContactState => ({ status: "error", message, values });
 

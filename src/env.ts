@@ -40,6 +40,11 @@ const contactSchema = z.object({
  */
 const adminSchema = z.object({
   ADMIN_EMAIL: z.email().transform((email) => email.trim().toLowerCase()),
+  /** Sign-in attempts allowed per visitor per 15 minutes. */
+  ADMIN_LOGIN_RATE_LIMIT_MAX: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.coerce.number().int().min(1).max(100_000).default(10),
+  ),
 });
 
 export type PublicEnv = z.infer<typeof publicSchema>;

@@ -2,6 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { getPublicEnv } from "@/env";
+import { authCookieOptions } from "./cookies";
 
 /**
  * A Supabase client that reads and writes the visitor's session cookies. It uses the publishable
@@ -17,7 +18,9 @@ export async function createSupabaseServerClient() {
       getAll: () => cookieStore.getAll(),
       setAll(cookiesToSet) {
         try {
-          for (const { name, value, options } of cookiesToSet) cookieStore.set(name, value, options);
+          for (const { name, value, options } of cookiesToSet) {
+            cookieStore.set(name, value, authCookieOptions(options));
+          }
         } catch {
           // Called from a Server Component, which cannot set cookies. Harmless: the proxy
           // refreshes the session on every request, and actions and route handlers can set them.

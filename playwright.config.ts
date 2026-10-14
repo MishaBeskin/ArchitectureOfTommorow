@@ -1,10 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
+import { E2E_ADMIN_EMAIL } from "./e2e/helpers/admin";
 
 const PORT = 3100;
 const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: "./e2e",
+  globalSetup: "./e2e/global-setup.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -32,6 +34,10 @@ export default defineConfig({
       // Never email anyone from tests, whatever is in .env.local.
       RESEND_API_KEY: "",
       CONTACT_TO_EMAIL: "",
+      // The admin under test is a throwaway account (e2e/global-setup.ts), never your own.
+      ADMIN_EMAIL: E2E_ADMIN_EMAIL,
+      // All tests share one address, so the real sign-in limit would lock repeated runs out.
+      ADMIN_LOGIN_RATE_LIMIT_MAX: "10000",
     },
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
