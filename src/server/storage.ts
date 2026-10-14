@@ -25,6 +25,19 @@ export async function uploadPublic(pathname: string, data: Buffer, contentType: 
   return storage.getPublicUrl(pathname).data.publicUrl;
 }
 
+/** A one-time address the browser can send one file to, at exactly this path, within two hours. */
+export async function createUploadSlot(pathname: string): Promise<{ path: string; token: string }> {
+  const { data, error } = await admin().storage.from(PROJECT_BUCKET).createSignedUploadUrl(pathname);
+  if (error || !data) throw new Error(`Could not prepare an upload at ${pathname}: ${error?.message ?? "no data"}`);
+  return { path: data.path, token: data.token };
+}
+
+export async function downloadObject(pathname: string): Promise<Buffer> {
+  const { data, error } = await admin().storage.from(PROJECT_BUCKET).download(pathname);
+  if (error || !data) throw new Error(`Download of ${pathname} failed: ${error?.message ?? "no data"}`);
+  return Buffer.from(await data.arrayBuffer());
+}
+
 export async function deleteObjects(pathnames: string[]): Promise<void> {
   if (pathnames.length === 0) return;
   const { error } = await admin().storage.from(PROJECT_BUCKET).remove(pathnames);

@@ -51,7 +51,7 @@ export async function getAdminProjectById(db: AnyDb, id: string) {
 export interface ProjectForEdit {
   project: typeof projects.$inferSelect;
   credits: Array<{ architectId: string; role: string | null }>;
-  images: Array<{ id: string; alt: string }>;
+  images: Array<typeof projectImages.$inferSelect>;
 }
 
 /** Everything the edit form needs, drafts included. Admin only: never cached or public. */
@@ -65,10 +65,10 @@ export async function getProjectForEdit(db: AnyDb, id: string): Promise<ProjectF
     .where(eq(projectArchitects.projectId, id))
     .orderBy(asc(projectArchitects.sortOrder));
   const images = await db
-    .select({ id: projectImages.id, alt: projectImages.alt })
+    .select()
     .from(projectImages)
     .where(eq(projectImages.projectId, id))
-    .orderBy(asc(projectImages.sortOrder));
+    .orderBy(asc(projectImages.sortOrder), asc(projectImages.createdAt));
 
   return { project, credits, images };
 }

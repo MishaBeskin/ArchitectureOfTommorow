@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { z } from "zod";
+import { ImageManager } from "@/components/admin/image-manager";
 import { ProjectForm } from "@/components/admin/project-form";
 import { PublishStatus } from "@/components/admin/publish-status";
 import { countryOptions } from "@/lib/countries";
@@ -11,6 +12,7 @@ import { publishProblems } from "@/lib/publish-readiness";
 import { requireAdmin } from "@/server/auth/require-admin";
 import { getDb } from "@/server/db/client";
 import { getProjectForEdit, listArchitectOptions } from "@/server/queries/admin-projects";
+import { attachImageAction, imageAction } from "../image-actions";
 import { saveProjectAction } from "../save-action";
 
 export const metadata: Metadata = { title: "Edit project" };
@@ -61,6 +63,13 @@ async function EditProject({ params, searchParams }: PageProps<"/admin/projects/
         architects={architects}
         countries={countryOptions()}
         projectId={project.id}
+      />
+      <ImageManager
+        projectId={project.id}
+        images={images}
+        coverImageId={project.coverImageId}
+        action={imageAction}
+        attach={attachImageAction}
       />
     </>
   );

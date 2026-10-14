@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import { E2E_ADMIN_EMAIL } from "./e2e/helpers/admin";
 
-const ADMIN_DATA_SPEC = /admin-(projects|project-form|architects)\.spec\.ts/;
+const ADMIN_DATA_SPEC = /admin-(projects|project-form|architects|images)\.spec\.ts/;
 const PORT = 3100;
 const baseURL = `http://localhost:${PORT}`;
 
