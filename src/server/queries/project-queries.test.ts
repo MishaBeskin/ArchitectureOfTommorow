@@ -12,6 +12,7 @@ import {
   getProjectPage,
   getPublishedSlugs,
   getRelatedProjects,
+  getSitemapEntries,
   listProjects,
 } from "./project-queries";
 
@@ -272,6 +273,19 @@ describe("getRelatedProjects", () => {
   it("returns nothing for an unknown or unpublished project", async () => {
     expect(await getRelatedProjects(db, "does-not-exist")).toEqual([]);
     expect(await getRelatedProjects(db, DRAFT_SLUG)).toEqual([]);
+  });
+});
+
+describe("getSitemapEntries", () => {
+  it("returns every published project with a real update time, and never a draft", async () => {
+    const entries = await getSitemapEntries(db);
+
+    expect(entries.map((e) => e.slug)).toEqual(PUBLISHED.map((p) => p.slug).sort());
+    expect(entries.map((e) => e.slug)).not.toContain(DRAFT_SLUG);
+    for (const entry of entries) {
+      expect(entry.updatedAt).toBeInstanceOf(Date);
+      expect(Number.isNaN(entry.updatedAt.getTime())).toBe(false);
+    }
   });
 });
 

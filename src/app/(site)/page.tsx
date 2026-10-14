@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { FeaturedProjects } from "@/components/home/featured-projects";
 import { Hero } from "@/components/home/hero";
 import { buttonStyles } from "@/components/ui/button-styles";
+import { pageMetadata } from "@/lib/seo";
 import { getFeaturedProjects } from "@/server/queries/projects";
+
+export const metadata: Metadata = pageMetadata({
+  description: "New architecture projects, shown through renderings, the people who designed them and the places they belong to.",
+  path: "/",
+});
 
 export default async function HomePage() {
   const featured = await getFeaturedProjects();

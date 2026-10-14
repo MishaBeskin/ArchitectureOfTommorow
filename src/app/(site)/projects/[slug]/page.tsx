@@ -4,7 +4,11 @@ import { ProjectDescription } from "@/components/projects/project-description";
 import { ProjectFacts } from "@/components/projects/project-facts";
 import { ProjectGallery } from "@/components/projects/project-gallery";
 import { RelatedProjects } from "@/components/projects/related-projects";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { breadcrumbJsonLd, projectJsonLd } from "@/lib/json-ld";
+import { pageMetadata } from "@/lib/seo";
+import { getSiteUrl } from "@/lib/site-url";
 import {
   getProjectPage,
   getPublishedSlugs,
@@ -35,9 +39,23 @@ export async function generateMetadata(props: PageProps<"/projects/[slug]">): Pr
   const result = await getProjectPage(slug);
   if (result.kind !== "found") return {};
   const { project } = result;
+  const title = project.seoTitle ?? project.title;
+  const description = project.seoDescription ?? project.summary;
+  const cover = project.coverImage;
+  const base = pageMetadata({ title, description, path: `/projects/${project.slug}` });
+
   return {
-    title: project.seoTitle ?? project.title,
-    description: project.seoDescription ?? project.summary,
+    ...base,
+    // The cover is the social preview; without one the site-wide default image applies.
+    ...(cover
+      ? {
+          openGraph: {
+            ...base.openGraph,
+            images: [{ url: cover.url, width: cover.width, height: cover.height, alt: cover.alt }],
+          },
+          twitter: { ...base.twitter, images: [cover.url] },
+        }
+      : {}),
   };
 }
 
@@ -56,8 +74,20 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
     ? [project.coverImage, ...project.images.filter((image) => image.id !== project.coverImage?.id)]
     : project.images;
 
+  const siteUrl = getSiteUrl();
+
   return (
     <article className="flex flex-col gap-10">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd(siteUrl, [
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/projects" },
+            { name: project.title, path: `/projects/${project.slug}` },
+          ]),
+          projectJsonLd(siteUrl, project),
+        ]}
+      />
       <div className="flex flex-col gap-4">
         <Breadcrumbs
           items={[

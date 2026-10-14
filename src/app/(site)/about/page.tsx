@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buttonStyles } from "@/components/ui/button-styles";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: "About Architecture of Tomorrow, a showcase of new architecture projects.",
-};
+  path: "/about",
+});
 
 // Placeholder copy: replace with the real story before launch.
 export default function AboutPage() {

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Newsreader } from "next/font/google";
+import { SITE_NAME } from "@/lib/site";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,12 +16,24 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
+const DESCRIPTION = "A showcase of new architecture projects.";
+
 export const metadata: Metadata = {
+  // Makes every relative canonical / Open Graph URL absolute.
+  metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "Architecture of Tomorrow",
-    template: "%s | Architecture of Tomorrow",
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "A showcase of new architecture projects.",
+  description: DESCRIPTION,
+  openGraph: {
+    title: SITE_NAME,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image", title: SITE_NAME, description: DESCRIPTION },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

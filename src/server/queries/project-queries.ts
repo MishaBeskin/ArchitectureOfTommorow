@@ -253,6 +253,15 @@ export async function getRelatedProjects(db: AnyDb, slug: string, limit = 3): Pr
   return toCards(db, rows);
 }
 
+/** Slug and last-modified time of every published project, for the sitemap. */
+export async function getSitemapEntries(db: AnyDb): Promise<Array<{ slug: string; updatedAt: Date }>> {
+  return db
+    .select({ slug: projects.slug, updatedAt: projects.updatedAt })
+    .from(projects)
+    .where(published)
+    .orderBy(asc(projects.slug));
+}
+
 export async function getPublishedSlugs(db: AnyDb): Promise<string[]> {
   const rows = await db.select({ slug: projects.slug }).from(projects).where(published).orderBy(asc(projects.slug));
   return rows.map((r) => r.slug);

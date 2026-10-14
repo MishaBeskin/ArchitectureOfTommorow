@@ -48,6 +48,13 @@ export async function getFilterOptions() {
   return queries.getFilterOptions(getDb());
 }
 
+export async function getSitemapEntries() {
+  "use cache";
+  cacheTag(PROJECTS_TAG);
+  cacheLife("days");
+  return queries.getSitemapEntries(getDb());
+}
+
 export async function getPublishedSlugs() {
   "use cache";
   cacheTag(PROJECTS_TAG);

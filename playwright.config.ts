@@ -21,6 +21,8 @@ export default defineConfig({
   webServer: {
     command: `pnpm build && pnpm exec next start -p ${PORT}`,
     url: baseURL,
+    // Canonical URLs, the sitemap and structured data are absolute, so they need the test origin.
+    env: { NEXT_PUBLIC_SITE_URL: baseURL },
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },

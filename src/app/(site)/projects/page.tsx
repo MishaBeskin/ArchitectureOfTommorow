@@ -11,12 +11,15 @@ import {
   parseProjectFilters,
   projectsHref,
 } from "@/lib/filters";
+import { pageMetadata } from "@/lib/seo";
 import { getFilterOptions, listProjects } from "@/server/queries/projects";
 
-export const metadata: Metadata = {
+// Filtered and paginated views share this canonical URL (and are marked noindex in the page body).
+export const metadata: Metadata = pageMetadata({
   title: "Projects",
   description: "Browse new architecture projects by type, location and year.",
-};
+  path: "/projects",
+});
 
 export default function ProjectsPage(props: PageProps<"/projects">) {
   return (
