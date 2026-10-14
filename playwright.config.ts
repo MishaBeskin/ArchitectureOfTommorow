@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import { E2E_ADMIN_EMAIL } from "./e2e/helpers/admin";
 
+const ADMIN_DATA_SPEC = /admin-projects\.spec\.ts/;
 const PORT = 3100;
 const baseURL = `http://localhost:${PORT}`;
 
@@ -16,8 +17,29 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile", use: { ...devices["Pixel 7"] } },
+    { name: "chromium", use: { ...devices["Desktop Chrome"] }, testIgnore: ADMIN_DATA_SPEC },
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: ADMIN_DATA_SPEC },
+    /*
+     * The admin projects spec creates, publishes and deletes projects in the shared database and
+     * expires the shared cache tags. The public-site tests count and list projects, so running
+     * the two at once makes them interfere (a throwaway project appears in a sitemap count, or a
+     * cache entry is rebuilt between another test's change and its check). So these run last, one
+     * test at a time, and the mobile variant only after the desktop one.
+     */
+    {
+      name: "admin-data",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: ADMIN_DATA_SPEC,
+      fullyParallel: false,
+      dependencies: ["chromium", "mobile"],
+    },
+    {
+      name: "admin-data-mobile",
+      use: { ...devices["Pixel 7"] },
+      testMatch: ADMIN_DATA_SPEC,
+      fullyParallel: false,
+      dependencies: ["admin-data"],
+    },
   ],
   // e2e runs against a production build, not the dev server
   webServer: {

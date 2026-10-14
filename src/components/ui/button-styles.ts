@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 export type ButtonSize = "md" | "lg";
 
 const base =
@@ -10,6 +10,8 @@ const variants: Record<ButtonVariant, string> = {
   primary: "bg-accent text-accent-foreground hover:bg-accent-hover",
   secondary: "border border-border-strong text-foreground hover:bg-surface",
   ghost: "text-foreground hover:bg-surface",
+  // For destructive confirmations. Red on white (and the dark-mode pair) keeps AA contrast.
+  danger: "bg-danger text-accent-foreground hover:opacity-90",
 };
 
 const sizes: Record<ButtonSize, string> = {

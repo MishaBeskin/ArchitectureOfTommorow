@@ -10,8 +10,9 @@ import * as queries from "./project-queries";
  * Logic lives in ./project-queries.ts so it can be tested without Next.js.
  */
 
-export const PROJECTS_TAG = "projects";
-export const projectTag = (slug: string) => `project:${slug}`;
+import { PROJECTS_TAG, projectTag } from "@/lib/cache-tags";
+
+export { PROJECTS_TAG, projectTag };
 
 export async function getFeaturedProjects(limit = 6) {
   "use cache";

@@ -1,27 +1,29 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { ProjectsTable } from "@/components/admin/projects-table";
 import { requireAdmin } from "@/server/auth/require-admin";
+import { getDb } from "@/server/db/client";
+import { listAdminProjects } from "@/server/queries/admin-projects";
+import { projectAction } from "./actions";
 
 export const metadata: Metadata = { title: "Projects" };
 
 export default function AdminProjectsPage() {
   return (
-    <Suspense fallback={null}>
-      <AdminProjects />
-    </Suspense>
+    <div className="flex flex-col gap-6">
+      <h1 className="font-serif text-4xl font-medium">Projects</h1>
+      <Suspense fallback={<p role="status" className="text-muted">Loading projects…</p>}>
+        <AdminProjects />
+      </Suspense>
+    </div>
   );
 }
 
 async function AdminProjects() {
   // Every admin page checks for itself; the layout's check is not enough on its own.
   await requireAdmin();
+  // Live, uncached read: the admin must see drafts and its own changes immediately.
+  const rows = await listAdminProjects(getDb());
 
-  return (
-    <div className="flex max-w-2xl flex-col gap-4">
-      <h1 className="font-serif text-4xl font-medium">Projects</h1>
-      <p className="text-lg text-muted">
-        You are signed in. Managing projects (create, edit, publish and delete) is built in the next steps.
-      </p>
-    </div>
-  );
+  return <ProjectsTable rows={rows} action={projectAction} />;
 }
