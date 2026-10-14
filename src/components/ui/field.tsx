@@ -10,6 +10,8 @@ export interface FieldControlProps {
 }
 
 interface FieldProps {
+  /** Set a stable id when something else (e.g. an error summary link) must point at the control. */
+  id?: string;
   label: string;
   hint?: string;
   error?: string;
@@ -22,8 +24,9 @@ interface FieldProps {
  * Label + control + hint + error. The render prop receives the id/aria wiring:
  *   <Field label="Title">{(c) => <Input name="title" {...c} />}</Field>
  */
-export function Field({ label, hint, error, required, className, children }: FieldProps) {
-  const id = useId();
+export function Field({ id: idProp, label, hint, error, required, className, children }: FieldProps) {
+  const generatedId = useId();
+  const id = idProp ?? generatedId;
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
