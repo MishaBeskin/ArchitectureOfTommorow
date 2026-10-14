@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/site/contact-form";
 import { pageMetadata } from "@/lib/seo";
+import { submitContact } from "./actions";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
@@ -17,7 +18,7 @@ export default function ContactPage() {
           Questions about a project, or want to work together? Send a message and we will reply.
         </p>
       </header>
-      <ContactForm />
+      <ContactForm action={submitContact} turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || undefined} />
     </div>
   );
 }

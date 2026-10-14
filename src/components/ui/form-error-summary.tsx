@@ -12,7 +12,7 @@ export interface ErrorSummaryItem {
  * Lists every error with a link to its field and moves focus to itself each time the user
  * submits (`attempt` changes), so screen reader users hear what went wrong.
  */
-export function FormErrorSummary({ errors, attempt }: { errors: ErrorSummaryItem[]; attempt: number }) {
+export function FormErrorSummary({ errors, attempt }: { errors: ErrorSummaryItem[]; attempt: unknown }) {
   const ref = useRef<HTMLDivElement>(null);
   const hasErrors = errors.length > 0;
 

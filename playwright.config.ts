@@ -22,7 +22,17 @@ export default defineConfig({
     command: `pnpm build && pnpm exec next start -p ${PORT}`,
     url: baseURL,
     // Canonical URLs, the sitemap and structured data are absolute, so they need the test origin.
-    env: { NEXT_PUBLIC_SITE_URL: baseURL },
+    env: {
+      NEXT_PUBLIC_SITE_URL: baseURL,
+      // Cloudflare's documented dummy keys: the widget always passes, so tests can submit the form.
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA",
+      TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA",
+      // Every test run comes from one address, so the real limit would lock repeated runs out.
+      CONTACT_RATE_LIMIT_MAX: "10000",
+      // Never email anyone from tests, whatever is in .env.local.
+      RESEND_API_KEY: "",
+      CONTACT_TO_EMAIL: "",
+    },
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },

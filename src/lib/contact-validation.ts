@@ -6,6 +6,19 @@ export interface ContactValues {
 
 export type ContactErrors = Partial<Record<keyof ContactValues, string>>;
 
+/** What the contact server action returns to the form. */
+export type ContactState =
+  | { status: "idle" }
+  | { status: "success" }
+  | {
+      status: "error";
+      /** A problem that is not about one field (rate limit, verification, server error). */
+      message?: string;
+      errors?: ContactErrors;
+      /** Echoed back because React resets an uncontrolled form after an action runs. */
+      values?: ContactValues;
+    };
+
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const CONTACT_LIMITS = { name: 100, email: 254, message: 2000, messageMin: 10 } as const;

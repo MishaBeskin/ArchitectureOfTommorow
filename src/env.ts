@@ -10,8 +10,33 @@ const serverSchema = publicSchema.extend({
   SUPABASE_SECRET_KEY: z.string().min(1),
 });
 
+/** A blank line in .env (`KEY=`) means "not set", not an empty value. */
+const optional = <T extends z.ZodType>(schema: T) =>
+  z.preprocess((value) => (value === "" ? undefined : value), schema.optional());
+
+/**
+ * Contact form services. All optional so the site builds and runs without them; the contact
+ * action decides what a missing service means (dev: skip it, production: refuse to send).
+ */
+const contactSchema = z.object({
+  TURNSTILE_SECRET_KEY: optional(z.string().min(1)),
+  RESEND_API_KEY: optional(z.string().min(1)),
+  /** Where messages are emailed. Without it they are only stored. */
+  CONTACT_TO_EMAIL: optional(z.email()),
+  CONTACT_FROM_EMAIL: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().min(3).default("Architecture of Tomorrow <onboarding@resend.dev>"),
+  ),
+  /** Messages allowed per visitor per hour. */
+  CONTACT_RATE_LIMIT_MAX: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.coerce.number().int().min(1).max(10_000).default(5),
+  ),
+});
+
 export type PublicEnv = z.infer<typeof publicSchema>;
 export type ServerEnv = z.infer<typeof serverSchema>;
+export type ContactEnv = z.infer<typeof contactSchema>;
 
 /** Throws one readable error that names every missing or malformed variable, never its value. */
 function parse<T extends z.ZodType>(schema: T, source: Record<string, string | undefined>): z.infer<T> {
@@ -40,4 +65,11 @@ export function getServerEnv(): ServerEnv {
   return parse(serverSchema, process.env);
 }
 
-export { parse as parseEnv, publicSchema, serverSchema };
+export function getContactEnv(): ContactEnv {
+  if (typeof window !== "undefined") {
+    throw new Error("getContactEnv() must not be called in the browser.");
+  }
+  return parse(contactSchema, process.env);
+}
+
+export { contactSchema, parse as parseEnv, publicSchema, serverSchema };
