@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Architecture of Tomorrow
 
-## Getting Started
+A website that showcases new architecture projects, with a private admin where the owner adds and edits them. Visitors browse featured and filtered projects, read about each one and send a message. The owner signs in to manage projects, architects, images and incoming messages.
 
-First, run the development server:
+Built with Next.js 16 (App Router, cache components), React 19, TypeScript and Tailwind CSS 4. Data and images live in Supabase (Postgres, Storage, Auth); the code talks to the database through Drizzle.
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp .env.example .env.local     # then fill it in; see the comments inside
+pnpm db:migrate                # create the tables
+pnpm db:seed                   # optional: fictional sample projects
+pnpm dev                       # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The admin is at `/admin`. You sign in with the Supabase user whose email is `ADMIN_EMAIL`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | What it does |
+|---|---|
+| `pnpm dev` / `pnpm build` / `pnpm start` | Run, build and serve the site |
+| `pnpm test` | Unit and component tests (Vitest; the database tests use an in-memory Postgres) |
+| `pnpm e2e` | Browser tests (Playwright) against a production build; needs the Supabase variables |
+| `pnpm lint` / `pnpm typecheck` | Code style and types |
+| `pnpm lhci` | Lighthouse budgets for speed, accessibility and SEO |
+| `pnpm launch:check` | Read-only check that the setup is ready to go live |
+| `pnpm db:generate` / `pnpm db:migrate` | Create and apply database migrations |
+| `pnpm db:seed` / `pnpm db:unseed` | Add or remove the fictional sample content |
 
-## Learn More
+## Where things are
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/(site)` is the public site; `src/app/admin` is the admin; `src/app/api/admin/upload` hands out one-time image upload addresses.
+- `src/server` holds everything that must stay on the server: database, queries, mutations, auth, storage, image processing.
+- `src/lib` holds code shared with the browser: validation rules, formatting, security headers and policies.
+- `src/components` holds the interface, split into `site`, `projects`, `admin` and `ui`.
+- `e2e` holds the browser tests; unit tests sit next to the code they test.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How it is kept safe
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Every admin page, action and route checks the signed-in user itself; the proxy only redirects early. A test proves each admin action refuses a signed-out caller before touching data.
+- Uploaded images are checked by their real contents, resized and re-encoded; the original is never stored or shown.
+- Content security policy and the standard security headers are set in `next.config.ts` (see `src/lib/csp.ts`).
+- Secrets never reach the browser; a test scans what the browser downloads for them.
 
-## Deploy on Vercel
+## Going live
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Follow [docs/LAUNCH.md](docs/LAUNCH.md): it covers the keys to create, the Vercel setup, the domain, backups and rollback, in plain steps.
