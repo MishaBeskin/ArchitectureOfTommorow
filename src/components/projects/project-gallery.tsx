@@ -59,7 +59,7 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
           placeholder="blur"
           blurDataURL={lead.blurDataUrl}
           preload
-          className="aspect-[16/9] w-full object-cover"
+          className="h-auto w-full"
         />
         <VisuallyHidden>Open larger view, image 1 of {count}</VisuallyHidden>
       </button>
@@ -81,7 +81,7 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
                   sizes="(min-width: 1152px) 352px, (min-width: 640px) 33vw, 50vw"
                   placeholder="blur"
                   blurDataURL={image.blurDataUrl}
-                  className="aspect-[4/3] w-full object-cover"
+                  className="aspect-[4/3] w-full object-contain"
                 />
                 <VisuallyHidden>
                   Open larger view, image {i + 2} of {count}

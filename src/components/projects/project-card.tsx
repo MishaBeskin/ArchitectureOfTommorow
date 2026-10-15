@@ -36,7 +36,7 @@ export function ProjectCard({
             loading={eager ? "eager" : "lazy"}
             placeholder="blur"
             blurDataURL={cover.blurDataUrl}
-            className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            className="aspect-[4/3] w-full object-contain transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
         ) : (
           <div className="aspect-[4/3] w-full" role="img" aria-label="No image available" />
