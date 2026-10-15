@@ -22,14 +22,14 @@ export default async function HomePage() {
       <FeaturedProjects projects={rest} />
       <section aria-labelledby="about-title" className="on-panel my-14 flex flex-col items-start gap-6 rounded-3xl bg-panel p-8 text-panel-foreground sm:p-14">
         <h2 id="about-title" className="font-display text-3xl sm:text-4xl">
-          Every project, documented
+          Explore the Projects
         </h2>
         <p className="max-w-2xl text-lg text-panel-muted">
-          Each project page brings together renderings, a description of the design, the architect,
-          the location and the year.
+          Discover architectural concepts that rethink how we live, move, and connect—from urban
+          neighborhoods and public parks to healthcare campuses and transport hubs.
         </p>
         <Link href="/projects" className={buttonStyles({ variant: "inverse" })}>
-          Explore the full list
+          View Projects
         </Link>
       </section>
     </>
