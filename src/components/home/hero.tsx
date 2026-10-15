@@ -18,8 +18,8 @@ export function Hero({ lead }: { lead: ProjectCardData | null }) {
           Architecture of Tomorrow
         </h1>
         <p className="mt-6 max-w-2xl text-xl font-semibold text-blue sm:text-2xl">
-          New architecture projects, shown through renderings, the people who designed them and the
-          places they belong to.
+          Architectural concepts and urban visions exploring new possibilities for the places we
+          live, move, and connect.
         </p>
         <div className="mt-8">
           <Link href="/projects" className={buttonStyles({ size: "lg" })}>

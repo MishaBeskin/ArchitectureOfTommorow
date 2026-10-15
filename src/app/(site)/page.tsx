@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/seo";
 import { getFeaturedProjects } from "@/server/queries/projects";
 
 export const metadata: Metadata = pageMetadata({
-  description: "New architecture projects, shown through renderings, the people who designed them and the places they belong to.",
+  description: "Architectural concepts and urban visions exploring new possibilities for the places we live, move, and connect.",
   path: "/",
 });
 
