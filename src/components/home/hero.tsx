@@ -46,7 +46,7 @@ export function Hero({ lead }: { lead: ProjectCardData | null }) {
               placeholder="blur"
               blurDataURL={cover.blurDataUrl}
               preload
-              className="aspect-[16/9] w-full object-cover"
+              className="h-auto w-full"
             />
           </Link>
           <figcaption className="text-muted">
