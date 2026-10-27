@@ -17,7 +17,7 @@ import { getFilterOptions, listProjects } from "@/server/queries/projects";
 // Filtered and paginated views share this canonical URL (and are marked noindex in the page body).
 export const metadata: Metadata = pageMetadata({
   title: "Projects",
-  description: "Browse new architecture projects by type, location and year.",
+  description: "Independent architectural concept studies for Israeli cities, filterable by type.",
   path: "/projects",
 });
 
@@ -27,7 +27,7 @@ export default function ProjectsPage(props: PageProps<"/projects">) {
       <header className="max-w-2xl">
         <h1 className="font-display text-5xl leading-[0.95] sm:text-7xl">Projects</h1>
         <p className="mt-5 text-xl font-semibold text-blue">
-          Browse new architecture projects. Filter by type, location and year.
+          Independent concept studies, from transport hubs to neighborhood renewal. Filter by type.
         </p>
       </header>
       {/*
@@ -38,7 +38,7 @@ export default function ProjectsPage(props: PageProps<"/projects">) {
       <noscript>
         <style>{`[data-projects-skeleton]{display:none}`}</style>
         <p className="rounded-lg border border-border-strong p-4">
-          Browsing and filtering projects needs JavaScript. Please enable it, or get in touch and we
+          Browsing and filtering projects needs JavaScript. Please enable it, or get in touch and I
           will send you the list.
         </p>
       </noscript>

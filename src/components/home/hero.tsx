@@ -11,19 +11,25 @@ export function Hero({ lead }: { lead: ProjectCardData | null }) {
   return (
     <section aria-labelledby="hero-title" className="flex flex-col gap-12 py-4 sm:gap-16 sm:py-8">
       <div className="max-w-4xl">
+        <p className="text-lg font-semibold text-foreground sm:text-xl">
+          Michael Beskin · Designer and developer, background in architecture and interior design
+        </p>
         <h1
           id="hero-title"
-          className="font-display text-5xl leading-[0.95] min-[480px]:text-6xl sm:text-8xl"
+          className="mt-3 font-display text-4xl leading-[0.95] min-[480px]:text-5xl sm:text-7xl"
         >
           Architecture of Tomorrow
         </h1>
         <p className="mt-6 max-w-2xl text-xl font-semibold text-blue sm:text-2xl">
-          Architectural concepts and urban visions exploring new possibilities for the places we
-          live, move, and connect.
+          Independent concept studies for Israeli cities: transport hubs, neighborhood renewal,
+          public space and healthcare infrastructure.
         </p>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/projects" className={buttonStyles({ size: "lg" })}>
-            Browse projects
+            View projects
+          </Link>
+          <Link href="/contact" className={buttonStyles({ size: "lg", variant: "secondary" })}>
+            Get in touch
           </Link>
         </div>
       </div>

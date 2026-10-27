@@ -37,9 +37,12 @@ export default function AboutPage() {
         The projects shown are independent conceptual studies, presented as design explorations
         rather than approved development plans.
       </p>
-      <div>
+      <div className="flex flex-wrap gap-3">
         <Link href="/projects" className={buttonStyles()}>
-          Browse projects
+          View projects
+        </Link>
+        <Link href="/contact" className={buttonStyles({ variant: "secondary" })}>
+          Get in touch
         </Link>
       </div>
     </div>

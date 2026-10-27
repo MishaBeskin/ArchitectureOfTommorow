@@ -93,7 +93,7 @@ export function ContactForm({ action, turnstileSiteKey }: ContactFormProps) {
     return (
       <div role="status" className="flex max-w-xl flex-col items-start gap-4 rounded-xl border border-border-strong p-6">
         <h2 className="font-display text-2xl">Thank you, your message is on its way</h2>
-        <p className="text-muted">We have received it and will reply to the email address you gave us.</p>
+        <p className="text-muted">I have received it and will reply to the email address you gave me.</p>
         <Link href="/projects" className={buttonStyles({ variant: "secondary" })}>
           Browse projects
         </Link>

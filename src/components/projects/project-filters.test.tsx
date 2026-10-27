@@ -19,12 +19,13 @@ const optionNames = (select: HTMLElement) =>
     .map((o) => o.textContent);
 
 describe("ProjectFilters", () => {
-  it("has a labelled select for type, location and year", () => {
+  it("has a labelled select for type and location, and none for year", () => {
     render(<ProjectFilters options={options} filters={{ page: 1 }} />);
 
-    for (const name of ["Type", "Location", "Year"]) {
+    for (const name of ["Type", "Location"]) {
       expect(screen.getByRole("combobox", { name })).toBeInTheDocument();
     }
+    expect(screen.queryByRole("combobox", { name: "Year" })).not.toBeInTheDocument();
   });
 
   it("offers an 'All' choice first and then only the available options", () => {
@@ -41,12 +42,18 @@ describe("ProjectFilters", () => {
       "Denmark (2)",
       "Japan (1)",
     ]);
-    expect(optionNames(screen.getByRole("combobox", { name: "Year" }))).toEqual([
-      "All years",
-      "2026",
-      "2025",
-      "2024",
-    ]);
+  });
+
+  it("hides the location filter while there is only one country to choose from", () => {
+    render(
+      <ProjectFilters
+        options={{ ...options, locations: [{ code: "IL", label: "Israel", count: 7 }] }}
+        filters={{ page: 1 }}
+      />,
+    );
+
+    expect(screen.queryByRole("combobox", { name: "Location" })).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Type" })).toBeInTheDocument();
   });
 
   it("preselects the current filters from the URL", () => {
@@ -54,7 +61,6 @@ describe("ProjectFilters", () => {
 
     expect(screen.getByRole("combobox", { name: "Type" })).toHaveValue("civic");
     expect(screen.getByRole("combobox", { name: "Location" })).toHaveValue("JP");
-    expect(screen.getByRole("combobox", { name: "Year" })).toHaveValue("2025");
   });
 
   it("submits with a button instead of reloading on every change", () => {

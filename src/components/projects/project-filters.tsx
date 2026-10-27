@@ -20,7 +20,7 @@ export function ProjectFilters({ options, filters }: { options: FilterOptions; f
       // Remount when the filters change so the selects always show the URL's state.
       key={serializeProjectFilters(filters)}
       aria-label="Filter projects"
-      className="grid gap-4 rounded-2xl bg-surface p-5 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:items-end"
+      className="grid gap-4 rounded-2xl bg-surface p-5 sm:grid-cols-2 lg:grid-cols-[repeat(2,minmax(0,1fr))_auto] lg:items-end"
     >
       <Field label="Type">
         {(control) => (
@@ -34,30 +34,20 @@ export function ProjectFilters({ options, filters }: { options: FilterOptions; f
           </Select>
         )}
       </Field>
-      <Field label="Location">
-        {(control) => (
-          <Select name="location" defaultValue={filters.location ?? ""} {...control}>
-            <option value="">All locations</option>
-            {options.locations.map(({ code, label, count }) => (
-              <option key={code} value={code}>
-                {label} ({count})
-              </option>
-            ))}
-          </Select>
-        )}
-      </Field>
-      <Field label="Year">
-        {(control) => (
-          <Select name="year" defaultValue={filters.year ? String(filters.year) : ""} {...control}>
-            <option value="">All years</option>
-            {options.years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </Select>
-        )}
-      </Field>
+      {options.locations.length > 1 && (
+        <Field label="Location">
+          {(control) => (
+            <Select name="location" defaultValue={filters.location ?? ""} {...control}>
+              <option value="">All locations</option>
+              {options.locations.map(({ code, label, count }) => (
+                <option key={code} value={code}>
+                  {label} ({count})
+                </option>
+              ))}
+            </Select>
+          )}
+        </Field>
+      )}
       <div className="flex flex-wrap items-center gap-3 sm:col-span-2 lg:col-span-1">
         <Button type="submit">Apply filters</Button>
         {hasActiveFilters(filters) && (

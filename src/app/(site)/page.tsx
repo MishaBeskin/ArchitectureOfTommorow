@@ -22,15 +22,21 @@ export default async function HomePage() {
       <FeaturedProjects projects={rest} />
       <section aria-labelledby="about-title" className="on-panel my-14 flex flex-col items-start gap-6 rounded-3xl bg-panel p-8 text-panel-foreground sm:p-14">
         <h2 id="about-title" className="font-display text-3xl sm:text-4xl">
-          Explore the Projects
+          About the author
         </h2>
         <p className="max-w-2xl text-lg text-panel-muted">
-          Discover architectural concepts that rethink how we live, move, and connect—from urban
-          neighborhoods and public parks to healthcare campuses and transport hubs.
+          I&rsquo;m Michael Beskin. I work from architectural thinking, digital tools and
+          AI-assisted visualization, and I present each concept with its context, my role and the
+          limits of the study. These are independent studies, not approved development plans.
         </p>
-        <Link href="/projects" className={buttonStyles({ variant: "inverse" })}>
-          View Projects
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/about" className={buttonStyles({ variant: "inverse" })}>
+            Read more about me
+          </Link>
+          <Link href="/contact" className={buttonStyles({ variant: "inverse" })}>
+            Get in touch
+          </Link>
+        </div>
       </section>
     </>
   );

@@ -42,7 +42,7 @@ describe("ProjectFacts", () => {
     expect(within(term("Architect")).getByText("Studio Nordlys")).toBeInTheDocument();
     expect(within(term("Architect")).getByText(/Lead architect/)).toBeInTheDocument();
     expect(within(term("Location")).getByText("Copenhagen, Denmark")).toBeInTheDocument();
-    expect(within(term("Year")).getByText("2025")).toBeInTheDocument();
+    expect(within(term("Concept horizon")).getByText("2025")).toBeInTheDocument();
     expect(within(term("Type")).getByText("Cultural")).toBeInTheDocument();
     expect(within(term("Status")).getByText("Completed")).toBeInTheDocument();
   });

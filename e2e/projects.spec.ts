@@ -23,7 +23,6 @@ test("offers only options that exist in published projects, with counts", async 
   await expect(page.getByLabel("Location").getByRole("option", { name: "Denmark (1)" })).toHaveCount(1);
   // The only commercial project is the unpublished draft, so that type is not offered.
   await expect(page.getByLabel("Type").getByRole("option", { name: "Commercial" })).toHaveCount(0);
-  await expect(page.getByLabel("Year").getByRole("option", { name: "2027" })).toHaveCount(1);
 });
 
 test("filtering updates the URL to a clean canonical form and the results", async ({ page }) => {
@@ -41,13 +40,13 @@ test("filtering updates the URL to a clean canonical form and the results", asyn
 
 test("combines filters and clears them", async ({ page }) => {
   await page.goto("/projects");
-  await page.getByLabel("Year").selectOption("2026");
-  await page.getByLabel("Type").selectOption("civic");
+  await page.getByLabel("Location").selectOption("DK");
+  await page.getByLabel("Type").selectOption("cultural");
   await apply(page).click();
 
-  await expect(page).toHaveURL(/\/projects\?type=civic&year=2026$/);
+  await expect(page).toHaveURL(/\/projects\?type=cultural&location=DK$/);
   await expect(cards(page)).toHaveCount(1);
-  await expect(cards(page).first().getByRole("link")).toHaveText("Savanna Civic Hall");
+  await expect(cards(page).first().getByRole("link")).toHaveText("Harbour Light Library");
 
   await page.getByRole("link", { name: "Clear filters" }).click();
   await expect(page).toHaveURL(/\/projects$/);
@@ -56,10 +55,10 @@ test("combines filters and clears them", async ({ page }) => {
 });
 
 test("a filtered URL is shareable: opening it directly gives the same results", async ({ page }) => {
-  await page.goto("/projects?year=2026");
+  await page.goto("/projects?location=DK");
 
-  await expect(page.getByLabel("Year")).toHaveValue("2026");
-  await expect(cards(page)).toHaveCount(2);
+  await expect(page.getByLabel("Location")).toHaveValue("DK");
+  await expect(cards(page)).toHaveCount(1);
 });
 
 test("shows a helpful empty state when nothing matches", async ({ page }) => {

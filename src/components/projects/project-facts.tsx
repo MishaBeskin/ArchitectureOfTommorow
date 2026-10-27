@@ -15,35 +15,42 @@ export function ProjectFacts({ project }: { project: Project }) {
   const { architects } = project;
 
   return (
-    <dl>
-      {architects.length > 0 && (
-        <Fact label={architects.length > 1 ? "Architects" : "Architect"}>
-          <ul className="flex flex-col gap-1">
-            {architects.map((architect) => (
-              <li key={architect.id}>
-                {architect.websiteUrl ? (
-                  <a
-                    href={architect.websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-4"
-                  >
-                    {architect.name}
-                    <VisuallyHidden> (opens in a new tab)</VisuallyHidden>
-                  </a>
-                ) : (
-                  architect.name
-                )}
-                {architect.role && <span className="text-panel-muted"> · {architect.role}</span>}
-              </li>
-            ))}
-          </ul>
-        </Fact>
-      )}
-      <Fact label="Location">{formatLocation(project.location)}</Fact>
-      <Fact label="Year">{project.year}</Fact>
-      <Fact label="Type">{formatProjectType(project.type)}</Fact>
-      <Fact label="Status">{formatPhase(project.phase)}</Fact>
-    </dl>
+    <>
+      <dl>
+        {architects.length > 0 && (
+          <Fact label={architects.length > 1 ? "Architects" : "Architect"}>
+            <ul className="flex flex-col gap-1">
+              {architects.map((architect) => (
+                <li key={architect.id}>
+                  {architect.websiteUrl ? (
+                    <a
+                      href={architect.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-4"
+                    >
+                      {architect.name}
+                      <VisuallyHidden> (opens in a new tab)</VisuallyHidden>
+                    </a>
+                  ) : (
+                    architect.name
+                  )}
+                  {architect.role && <span className="text-panel-muted"> · {architect.role}</span>}
+                </li>
+              ))}
+            </ul>
+          </Fact>
+        )}
+        <Fact label="Location">{formatLocation(project.location)}</Fact>
+        <Fact label="Concept horizon">{project.year}</Fact>
+        <Fact label="Type">{formatProjectType(project.type)}</Fact>
+        <Fact label="Status">{formatPhase(project.phase)}</Fact>
+        <Fact label="Context">Independent concept study</Fact>
+      </dl>
+      <p className="mt-6 border-t border-white/15 pt-4 text-sm text-panel-muted">
+        The horizon is the future condition the concept explores, not a delivery date. This is not
+        an official commission, and no endorsement by the organizations or sites shown is implied.
+      </p>
+    </>
   );
 }

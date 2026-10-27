@@ -6,11 +6,12 @@ import { FeaturedProjects } from "./featured-projects";
 import { Hero } from "./hero";
 
 describe("Hero", () => {
-  it("has one h1 and a link to browse projects", () => {
+  it("has one h1 and links to view projects and get in touch", () => {
     render(<Hero lead={cardFixture()} />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("link", { name: "Browse projects" })).toHaveAttribute("href", "/projects");
+    expect(screen.getByRole("link", { name: "View projects" })).toHaveAttribute("href", "/projects");
+    expect(screen.getByRole("link", { name: "Get in touch" })).toHaveAttribute("href", "/contact");
   });
 
   it("captions the lead project with a link, location and year", () => {

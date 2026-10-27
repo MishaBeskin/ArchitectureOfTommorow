@@ -16,6 +16,7 @@ const lightboxButton =
 export function ProjectGallery({ images, title }: { images: ProjectImage[]; title: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState<number | null>(null);
+  const [zoomed, setZoomed] = useState(false);
   const count = images.length;
 
   if (count === 0) return null;
@@ -24,6 +25,7 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
 
   function open(next: number) {
     setIndex(next);
+    setZoomed(false);
     dialogRef.current?.showModal();
   }
 
@@ -32,6 +34,7 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
   }
 
   function move(delta: number) {
+    setZoomed(false);
     setIndex((i) => (i === null ? i : (i + delta + count) % count));
   }
 
@@ -109,22 +112,53 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
               <p aria-live="polite" className="text-white/90">
                 Image {(index ?? 0) + 1} of {count}
               </p>
-              <button type="button" onClick={close} className={lightboxButton}>
-                Close
-              </button>
+              <div className="flex flex-wrap items-center justify-end gap-3">
+                <button
+                  type="button"
+                  aria-pressed={zoomed}
+                  onClick={() => setZoomed((z) => !z)}
+                  className={lightboxButton}
+                >
+                  Zoom
+                </button>
+                <a href={current.url} target="_blank" rel="noopener noreferrer" className={lightboxButton}>
+                  Open original
+                  <VisuallyHidden> (opens in a new tab)</VisuallyHidden>
+                </a>
+                <button type="button" onClick={close} className={lightboxButton}>
+                  Close
+                </button>
+              </div>
             </div>
-            <figure className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3">
-              <Image
-                key={current.id}
-                src={current.url}
-                alt={current.alt}
-                width={current.width}
-                height={current.height}
-                sizes="100vw"
-                placeholder="blur"
-                blurDataURL={current.blurDataUrl}
-                className="h-auto max-h-[70vh] w-auto max-w-full object-contain"
-              />
+            <figure className="flex min-h-0 flex-1 flex-col items-center gap-3">
+              {/* Zoomed: the image shows at full resolution and the area scrolls (pan) in both directions. */}
+              <div
+                tabIndex={zoomed ? 0 : undefined}
+                role={zoomed ? "region" : undefined}
+                aria-label={zoomed ? "Zoomed image, scroll to pan" : undefined}
+                className={
+                  zoomed
+                    ? "min-h-0 w-full flex-1 overflow-auto"
+                    : "flex min-h-0 w-full flex-1 items-center justify-center"
+                }
+              >
+                <Image
+                  key={current.id}
+                  src={current.url}
+                  alt={current.alt}
+                  width={current.width}
+                  height={current.height}
+                  sizes={zoomed ? `${current.width}px` : "100vw"}
+                  placeholder="blur"
+                  blurDataURL={current.blurDataUrl}
+                  className={
+                    zoomed
+                      ? "h-auto max-w-none"
+                      : "h-auto max-h-[70vh] w-auto max-w-full object-contain"
+                  }
+                  style={zoomed ? { width: current.width } : undefined}
+                />
+              </div>
               {(current.caption || current.credit) && (
                 <figcaption className="text-center text-white/90">
                   {current.caption}
